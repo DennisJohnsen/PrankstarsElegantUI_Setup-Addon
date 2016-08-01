@@ -1,4 +1,4 @@
-## Interface: 62000
+## Interface: 70000
 ## Title: Prankstars Elegant UI
 ## Version: 2.1.0
 ## Author: Prankstar
@@ -6,5 +6,4 @@
 ## DefaultState: enabled
 ## SavedVariables: PrankUI
 
-Templates.xml
-Core.lua
+PrankstarsElegantUI.lua
