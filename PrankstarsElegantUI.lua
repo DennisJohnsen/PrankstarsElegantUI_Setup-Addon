@@ -1,10 +1,10 @@
 --[[
 -- Prankstars Elegant UI - Namespaces and variables
 ]]--
-PrankUI = "PrankUI";
-ProfileName = "Prankstars Elegant UI";
-MediaPath = "Interface\\AddOns\\PrankstarsElegantUI\\media\\";
-FrameStrata = "MEDIUM"; -- BACKGROUND, LOW, MEDIUM, HIGH, DIALOG, FULLSCREEN, FULLSCREEN_DIALOG, TOOLTIP
+local PrankUI = "PrankUI";
+local ProfileName = "Prankstars Elegant UI";
+local MediaPath = "Interface\\AddOns\\PrankstarsElegantUI\\media\\";
+local FrameStrata = "MEDIUM"; -- BACKGROUND, LOW, MEDIUM, HIGH, DIALOG, FULLSCREEN, FULLSCREEN_DIALOG, TOOLTIP
 
 
 --[[
@@ -22,7 +22,9 @@ local kgPanels = LibStub("AceAddon-3.0"):GetAddon("kgPanels");
 local Castbars = LibStub("AceAddon-3.0"):GetAddon("Castbars");
 local Masque = LibStub("AceAddon-3.0"):GetAddon("Masque");
 
-function profileDB (addon, addonLayout)
+local PrankUISetup = {};
+
+PrankUISetup.DB = function (addon, addonLayout)
     addon.db:SetProfile(UnitName("player").." - "..GetRealmName());
 
     if addonLayout == "ironhorde" then
@@ -34,16 +36,20 @@ function profileDB (addon, addonLayout)
     end
 end
 
-function profileSetup (layout)
-    profileDB(Bartender4);
-    profileDB(ShadowUF);
-    profileDB(Skada);
-    profileDB(Prat);
-    profileDB(Castbars, layout);
-    profileDB(kgPanels, layout);
-
+PrankUISetup.Setup = function (layout)
+    -- Profile setups
+    PrankUISetup.DB(Bartender4);
+    PrankUISetup.DB(ShadowUF);
+    PrankUISetup.DB(Skada);
+    PrankUISetup.DB(Prat);
+    PrankUISetup.DB(Castbars, layout);
+    PrankUISetup.DB(kgPanels, layout);
     SexyMap2DB[(UnitName("player").."-"..GetRealmName())] = "global";
 
+    -- Wow settings
+    SetActionBarToggles(1, 1, 1, 1);
+
+    -- Reload UI
     ReloadUI();
 end
 
@@ -55,7 +61,7 @@ end
 ]]--
 
 -- Main frame
-UISetup = CreateFrame("Frame", PrankUI, UIParent);
+local UISetup = CreateFrame("Frame", PrankUI, UIParent);
 UISetup:SetFrameStrata(FrameStrata);
 UISetup:SetSize(1024, 256); -- W, H
 UISetup:SetPoint("CENTER", UIParent, "CENTER", 0, 128); -- point, relative frame, relative point, x, y
@@ -110,7 +116,7 @@ UISetup.ironhorde.button:SetScript('OnLeave', function()
 end);
 UISetup.ironhorde.button:SetScript("OnClick", function()
     print("Iron Horde layout selected!");
-    profileSetup("ironhorde");
+    PrankUISetup.Setup("ironhorde");
 end);
 
 
@@ -147,7 +153,7 @@ UISetup.legion.button:SetScript('OnLeave', function()
 end);
 UISetup.legion.button:SetScript("OnClick", function()
     print("Legion layout selected!");
-    profileSetup("legion");
+    PrankUISetup.Setup("legion");
 end);
 
 
